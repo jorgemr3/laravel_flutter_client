@@ -1,3 +1,3 @@
 # laravel_flutter_client
 
-A new Flutter project.
+Cliente en flutter web que consume una API en laravel usando peticiones http (Api rest)
