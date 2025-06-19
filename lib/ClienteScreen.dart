@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../utils.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 class ApiClientScreen extends StatefulWidget {
@@ -17,8 +17,7 @@ class ApiClientScreenState extends State<ApiClientScreen> {
   final String mensaje =
       'No has realizado ninguna petición, presiona el botón para obtener productos.';
   String responseData = '';
-  // final _serverUrl = '192.168.0.199:8000';
-  late String? _serverUrl;
+  final _serverUrl ='127.0.0.1:8000';
   final _indexController = TextEditingController();
 
   //TODO: estos son controladores de Actualizar
@@ -32,8 +31,8 @@ class ApiClientScreenState extends State<ApiClientScreen> {
     super.initState();
     getData();
     responseData = mensaje;
-    _serverUrl = dotenv.env['SERVER_URL'];
-    if (_serverUrl == null) showResponseDialog('ERROR', 'error en la url', context);
+    // _serverUrl = dotenv.env['SERVER_URL'];
+    // if (_serverUrl == null) showResponseDialog('ERROR', 'error en la url', context);
   }
 
   @override
@@ -49,7 +48,7 @@ class ApiClientScreenState extends State<ApiClientScreen> {
 
 Future<void> getData() async {
     try {
-      final response = await http.get(Uri.http(_serverUrl!, 'api/products'));
+      final response = await http.get(Uri.http(_serverUrl, 'api/products'));
       setState(() {
         _products = jsonDecode(response.body);
         responseData = 'Status: ${response.statusCode}\n${response.body}';
@@ -63,7 +62,7 @@ Future<void> getData() async {
   Future<void> postData(Map<String, dynamic> data) async {
     try {
       final response = await http.post(
-        Uri.http(_serverUrl!, 'api/products'),
+        Uri.http(_serverUrl, 'api/products'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(data),
       );
@@ -78,7 +77,7 @@ Future<void> getData() async {
   Future<void> updateData(int id, Map<String, dynamic> data) async {
     try {
       final response = await http.put(
-        Uri.http(_serverUrl!, 'api/products/$id'),
+        Uri.http(_serverUrl, 'api/products/$id'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(data),
       );
@@ -93,7 +92,7 @@ Future<void> getData() async {
   Future<void> deleteData(int id) async {
     try {
       final response = await http.delete(
-        Uri.http(_serverUrl!, 'api/products/$id'),
+        Uri.http(_serverUrl, 'api/products/$id'),
         headers: {'Content-Type': 'application/json'},
       );
       if (!mounted) return;
